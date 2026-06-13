@@ -5432,3 +5432,24 @@ body.dark-mode .resume-template-select {
     padding-top: 16px !important;
   }
 }
+
+/* ==========================
+   MOBILE SIDEBAR CLOSE FIX
+========================== */
+
+@media (max-width: 900px) {
+  .sidebar-close-btn {
+    position: relative;
+    z-index: 10001;
+    pointer-events: auto;
+  }
+
+  .sidebar-mobile-header {
+    position: relative;
+    z-index: 10000;
+  }
+
+  .sidebar.premium-sidebar {
+    pointer-events: auto;
+  }
+}

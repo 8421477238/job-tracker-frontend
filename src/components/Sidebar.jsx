@@ -71,9 +71,17 @@ function Sidebar({ isOpen, onClose }) {
             </div>
           </div>
 
-          <button className="sidebar-close-btn" onClick={onClose}>
-            ✕
-          </button>
+          <button
+  type="button"
+  className="sidebar-close-btn"
+  onClick={() => {
+    if (onClose) {
+      onClose();
+    }
+  }}
+>
+  ✕
+</button>
         </div>
 
         <div className="sidebar-section-title">WORKSPACE</div>
