@@ -7,7 +7,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 function ResumeBuilder() {
   const resumeRef = useRef(null);
 
-  const [template, setTemplate] = useState("modern");
+  const [template, setTemplate] = useState("modernTech");
 
   const [resumeData, setResumeData] = useState({
     fullName: "",
@@ -143,6 +143,12 @@ ${resumeData.certifications}
     ? resumeData.skills.split(",").map((skill) => skill.trim())
     : [];
 
+  const getInitial = () => {
+    return resumeData.fullName
+      ? resumeData.fullName.charAt(0).toUpperCase()
+      : "Y";
+  };
+
   return (
     <DashboardLayout
       title="Resume Builder"
@@ -188,7 +194,9 @@ ${resumeData.certifications}
               onChange={(e) => setTemplate(e.target.value)}
               className="resume-template-select"
             >
-              <option value="modern">Modern Tech Resume</option>
+              <option value="modernTech">Modern Tech Resume</option>
+              <option value="premiumBlue">Premium Blue Resume</option>
+              <option value="developerDark">Developer Dark Resume</option>
               <option value="ats">ATS Professional Resume</option>
             </select>
           </div>
@@ -196,7 +204,6 @@ ${resumeData.certifications}
           <div className="resume-builder-form-grid">
             <div className="resume-builder-group">
               <label>Full Name</label>
-
               <input
                 type="text"
                 name="fullName"
@@ -208,7 +215,6 @@ ${resumeData.certifications}
 
             <div className="resume-builder-group">
               <label>Email</label>
-
               <input
                 type="email"
                 name="email"
@@ -220,7 +226,6 @@ ${resumeData.certifications}
 
             <div className="resume-builder-group">
               <label>Phone</label>
-
               <input
                 type="tel"
                 name="phone"
@@ -232,7 +237,6 @@ ${resumeData.certifications}
 
             <div className="resume-builder-group">
               <label>Location</label>
-
               <input
                 type="text"
                 name="location"
@@ -244,7 +248,6 @@ ${resumeData.certifications}
 
             <div className="resume-builder-group">
               <label>LinkedIn</label>
-
               <input
                 type="text"
                 name="linkedin"
@@ -256,7 +259,6 @@ ${resumeData.certifications}
 
             <div className="resume-builder-group">
               <label>GitHub</label>
-
               <input
                 type="text"
                 name="github"
@@ -268,7 +270,6 @@ ${resumeData.certifications}
 
             <div className="resume-builder-group full">
               <label>Portfolio</label>
-
               <input
                 type="text"
                 name="portfolio"
@@ -280,7 +281,6 @@ ${resumeData.certifications}
 
             <div className="resume-builder-group full">
               <label>Career Objective</label>
-
               <textarea
                 name="careerObjective"
                 placeholder="Motivated Full Stack Developer with hands-on experience in React.js, Node.js, Express.js and MySQL..."
@@ -291,7 +291,6 @@ ${resumeData.certifications}
 
             <div className="resume-builder-group full">
               <label>Education</label>
-
               <textarea
                 name="education"
                 placeholder="B.Tech Computer Science Engineering, Parul University..."
@@ -302,7 +301,6 @@ ${resumeData.certifications}
 
             <div className="resume-builder-group full">
               <label>Skills</label>
-
               <textarea
                 name="skills"
                 placeholder="HTML, CSS, JavaScript, React.js, Node.js, Express.js, MySQL, Git, REST APIs"
@@ -313,7 +311,6 @@ ${resumeData.certifications}
 
             <div className="resume-builder-group full">
               <label>Projects</label>
-
               <textarea
                 name="projects"
                 placeholder="Job Tracker - Full stack placement management platform using React, Express, MySQL, JWT authentication, Resume Vault, PWA and AI career features."
@@ -324,7 +321,6 @@ ${resumeData.certifications}
 
             <div className="resume-builder-group full">
               <label>Experience / Internship</label>
-
               <textarea
                 name="experience"
                 placeholder="Full Stack Developer Intern at Aenexz Tech Pvt Ltd. Worked on employee task and attendance management system using React, PHP and MySQL."
@@ -335,7 +331,6 @@ ${resumeData.certifications}
 
             <div className="resume-builder-group full">
               <label>Certifications</label>
-
               <textarea
                 name="certifications"
                 placeholder="AWS Basics, React Certification, JavaScript Course..."
@@ -361,46 +356,109 @@ ${resumeData.certifications}
             </div>
           </div>
 
-          {template === "modern" ? (
+          {template === "modernTech" && (
             <div
-              className="premium-resume-paper modern-resume-template"
+              className="premium-resume-paper modern-tech-template"
               ref={resumeRef}
             >
-              <aside className="premium-resume-sidebar">
-                <div className="resume-avatar">
-                  {resumeData.fullName
-                    ? resumeData.fullName.charAt(0).toUpperCase()
-                    : "Y"}
+              <div className="modern-tech-header">
+                <div>
+                  <span className="modern-tech-label">Modern Tech Resume</span>
+                  <h1>{resumeData.fullName || "Your Name"}</h1>
+                  <p>
+                    {resumeData.careerObjective ||
+                      "A motivated technology professional focused on building scalable, modern, and user-friendly digital products."}
+                  </p>
                 </div>
 
+                <div className="modern-tech-avatar">{getInitial()}</div>
+              </div>
+
+              <div className="modern-tech-contact">
+                <span>{resumeData.email || "email@example.com"}</span>
+                <span>{resumeData.phone || "+91 XXXXX XXXXX"}</span>
+                <span>{resumeData.location || "City, State"}</span>
+              </div>
+
+              <div className="modern-tech-body">
+                <main>
+                  <section>
+                    <h3>Projects</h3>
+                    <p>{resumeData.projects || "Your project details."}</p>
+                  </section>
+
+                  <section>
+                    <h3>Experience / Internship</h3>
+                    <p>
+                      {resumeData.experience ||
+                        "Your internship or work experience."}
+                    </p>
+                  </section>
+
+                  <section>
+                    <h3>Education</h3>
+                    <p>{resumeData.education || "Your education details."}</p>
+                  </section>
+                </main>
+
+                <aside>
+                  <section>
+                    <h3>Skills</h3>
+                    <div className="modern-skill-stack">
+                      {skillsList.length === 0 ? (
+                        <>
+                          <span>React.js</span>
+                          <span>JavaScript</span>
+                          <span>Node.js</span>
+                          <span>MySQL</span>
+                        </>
+                      ) : (
+                        skillsList.map((skill) => (
+                          <span key={skill}>{skill}</span>
+                        ))
+                      )}
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3>Links</h3>
+                    <p>{resumeData.linkedin || "LinkedIn Profile"}</p>
+                    <p>{resumeData.github || "GitHub Profile"}</p>
+                    <p>{resumeData.portfolio || "Portfolio Website"}</p>
+                  </section>
+
+                  <section>
+                    <h3>Certifications</h3>
+                    <p>
+                      {resumeData.certifications || "Your certifications."}
+                    </p>
+                  </section>
+                </aside>
+              </div>
+            </div>
+          )}
+
+          {template === "premiumBlue" && (
+            <div
+              className="premium-resume-paper premium-blue-template"
+              ref={resumeRef}
+            >
+              <aside className="premium-blue-left">
+                <div className="premium-blue-avatar">{getInitial()}</div>
+
                 <h2>{resumeData.fullName || "Your Name"}</h2>
+                <p className="premium-blue-role">Career Candidate</p>
 
-                <p className="resume-role">
-                  {resumeData.careerObjective
-                    ? "Career Candidate"
-                    : "Professional Candidate"}
-                </p>
-
-                <div className="resume-side-section">
+                <div className="premium-blue-section">
                   <h4>Contact</h4>
-
                   <p>{resumeData.email || "email@example.com"}</p>
                   <p>{resumeData.phone || "+91 XXXXX XXXXX"}</p>
                   <p>{resumeData.location || "City, State"}</p>
                 </div>
 
-                <div className="resume-side-section">
-                  <h4>Links</h4>
-
-                  <p>{resumeData.linkedin || "LinkedIn Profile"}</p>
-                  <p>{resumeData.github || "GitHub Profile"}</p>
-                  <p>{resumeData.portfolio || "Portfolio Website"}</p>
-                </div>
-
-                <div className="resume-side-section">
-                  <h4>Core Skills</h4>
-
-                  <div className="resume-skill-list">
+                <div className="premium-blue-section">
+                  <h4>Skills</h4>
+                  <div className="premium-blue-skills">
                     {skillsList.length === 0 ? (
                       <>
                         <span>React.js</span>
@@ -408,20 +466,40 @@ ${resumeData.certifications}
                         <span>Node.js</span>
                       </>
                     ) : (
-                      skillsList.slice(0, 10).map((skill) => (
+                      skillsList.slice(0, 12).map((skill) => (
                         <span key={skill}>{skill}</span>
                       ))
                     )}
                   </div>
                 </div>
+
+                <div className="premium-blue-section">
+                  <h4>Links</h4>
+                  <p>{resumeData.linkedin || "LinkedIn Profile"}</p>
+                  <p>{resumeData.github || "GitHub Profile"}</p>
+                  <p>{resumeData.portfolio || "Portfolio Website"}</p>
+                </div>
               </aside>
 
-              <main className="premium-resume-main">
+              <main className="premium-blue-main">
                 <section>
-                  <h3>Professional Summary</h3>
+                  <h3>Profile Summary</h3>
                   <p>
                     {resumeData.careerObjective ||
                       "Write a strong career objective to introduce your skills, goals, and professional direction."}
+                  </p>
+                </section>
+
+                <section>
+                  <h3>Projects</h3>
+                  <p>{resumeData.projects || "Your project details."}</p>
+                </section>
+
+                <section>
+                  <h3>Experience</h3>
+                  <p>
+                    {resumeData.experience ||
+                      "Your internship or work experience."}
                   </p>
                 </section>
 
@@ -431,25 +509,93 @@ ${resumeData.certifications}
                 </section>
 
                 <section>
+                  <h3>Certifications</h3>
+                  <p>{resumeData.certifications || "Your certifications."}</p>
+                </section>
+              </main>
+            </div>
+          )}
+
+          {template === "developerDark" && (
+            <div
+              className="premium-resume-paper developer-dark-template"
+              ref={resumeRef}
+            >
+              <div className="developer-dark-top">
+                <div className="developer-dark-avatar">{getInitial()}</div>
+
+                <div>
+                  <span>Developer Resume</span>
+                  <h1>{resumeData.fullName || "Your Name"}</h1>
+                  <p>
+                    {resumeData.email || "email@example.com"} •{" "}
+                    {resumeData.phone || "+91 XXXXX XXXXX"} •{" "}
+                    {resumeData.location || "City, State"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="developer-dark-grid">
+                <section className="developer-dark-panel large">
+                  <h3>Professional Summary</h3>
+                  <p>
+                    {resumeData.careerObjective ||
+                      "Write a professional summary focused on your technical skills, project experience, and career goal."}
+                  </p>
+                </section>
+
+                <section className="developer-dark-panel">
+                  <h3>Tech Stack</h3>
+                  <div className="developer-dark-skills">
+                    {skillsList.length === 0 ? (
+                      <>
+                        <span>React.js</span>
+                        <span>Node.js</span>
+                        <span>Express.js</span>
+                        <span>MySQL</span>
+                      </>
+                    ) : (
+                      skillsList.map((skill) => (
+                        <span key={skill}>{skill}</span>
+                      ))
+                    )}
+                  </div>
+                </section>
+
+                <section className="developer-dark-panel large">
                   <h3>Projects</h3>
                   <p>{resumeData.projects || "Your project details."}</p>
                 </section>
 
-                <section>
-                  <h3>Experience / Internship</h3>
+                <section className="developer-dark-panel">
+                  <h3>Links</h3>
+                  <p>{resumeData.linkedin || "LinkedIn Profile"}</p>
+                  <p>{resumeData.github || "GitHub Profile"}</p>
+                  <p>{resumeData.portfolio || "Portfolio Website"}</p>
+                </section>
+
+                <section className="developer-dark-panel large">
+                  <h3>Experience</h3>
                   <p>
                     {resumeData.experience ||
                       "Your internship or work experience."}
                   </p>
                 </section>
 
-                <section>
+                <section className="developer-dark-panel">
+                  <h3>Education</h3>
+                  <p>{resumeData.education || "Your education details."}</p>
+                </section>
+
+                <section className="developer-dark-panel large">
                   <h3>Certifications</h3>
                   <p>{resumeData.certifications || "Your certifications."}</p>
                 </section>
-              </main>
+              </div>
             </div>
-          ) : (
+          )}
+
+          {template === "ats" && (
             <div
               className="premium-resume-paper ats-resume-template"
               ref={resumeRef}
