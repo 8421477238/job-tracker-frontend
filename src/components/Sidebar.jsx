@@ -1,9 +1,20 @@
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 function Sidebar({ isOpen, onClose }) {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -24,6 +35,17 @@ function Sidebar({ isOpen, onClose }) {
     if (onClose) {
       onClose();
     }
+  };
+
+  const getInitials = (name) => {
+    if (!name) return "U";
+
+    return name
+      .split(" ")
+      .map((word) => word.charAt(0))
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
   };
 
   return (
@@ -152,11 +174,13 @@ function Sidebar({ isOpen, onClose }) {
 
       <div className="sidebar-footer">
         <div className="sidebar-user premium-user-card">
-          <div className="user-avatar">DA</div>
+          <div className="user-avatar">
+            {getInitials(user?.name)}
+          </div>
 
           <div>
-            <h4>Darshan Ahire</h4>
-            <p>Full Stack Developer</p>
+            <h4>{user?.name || "User"}</h4>
+            <p>{user?.career_role || "Career Candidate"}</p>
           </div>
         </div>
 
