@@ -22,6 +22,13 @@ function Settings() {
     confirmPassword: "",
   });
 
+  const [preferences, setPreferences] = useState({
+    emailNotifications: true,
+    interviewReminders: true,
+    resumeTips: true,
+    jobAlerts: true,
+  });
+
   const [loading, setLoading] = useState(false);
   const [passwordLoading, setPasswordLoading] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -61,6 +68,22 @@ function Settings() {
       ...passwordData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const togglePreference = (key) => {
+    const updatedPreferences = {
+      ...preferences,
+      [key]: !preferences[key],
+    };
+
+    setPreferences(updatedPreferences);
+
+    localStorage.setItem(
+      "jobTrackerPreferences",
+      JSON.stringify(updatedPreferences)
+    );
+
+    toast.success("Preference updated");
   };
 
   const updateProfile = async () => {
@@ -126,6 +149,30 @@ function Settings() {
     }
   };
 
+  const exportAccountData = () => {
+    const data = {
+      profile,
+      preferences,
+      exportedAt: new Date().toLocaleString(),
+      app: "Job Tracker",
+    };
+
+    const file = new Blob([JSON.stringify(data, null, 2)], {
+      type: "application/json",
+    });
+
+    const url = URL.createObjectURL(file);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "job-tracker-account-data.json";
+    link.click();
+
+    URL.revokeObjectURL(url);
+
+    toast.success("Account data exported");
+  };
+
   const deleteAccount = async () => {
     try {
       await API.delete("/auth/delete-account", {
@@ -149,40 +196,110 @@ function Settings() {
     }
   };
 
+  const getInitials = () => {
+    if (!profile.name) return "U";
+
+    return profile.name
+      .split(" ")
+      .map((item) => item.charAt(0))
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+  };
+
+  const profileCompletion = Math.round(
+    ([profile.name, profile.email, profile.mobile, profile.career_role].filter(
+      Boolean
+    ).length /
+      4) *
+      100
+  );
+
   useEffect(() => {
     fetchProfile();
+
+    const savedPreferences = localStorage.getItem("jobTrackerPreferences");
+
+    if (savedPreferences) {
+      setPreferences(JSON.parse(savedPreferences));
+    }
   }, []);
 
   return (
     <DashboardLayout
       title="Settings"
-      subtitle="Manage your profile, contact details, and account preferences."
+      subtitle="Manage your profile, security, preferences, and career workspace."
     >
-      <section className="settings-hero">
+      <section className="premium-settings-hero">
         <div>
-          <div className="next-hero-badge">⚙️ Account Control Center</div>
+          <div className="next-hero-badge">⚙️ Career Control Center</div>
 
-          <h1>Manage your career workspace.</h1>
+          <h1>Personalize your career workspace.</h1>
 
           <p>
-            Update your personal information, contact details, security
-            preferences, and account settings from one professional dashboard.
+            Manage your profile, account security, notifications, data export,
+            and workspace preferences from one premium dashboard.
           </p>
+        </div>
+
+        <div className="settings-profile-preview">
+          <div className="settings-avatar-xl">{getInitials()}</div>
+
+          <h2>{profile.name || "Your Name"}</h2>
+
+          <p>{profile.career_role || "Career Candidate"}</p>
+
+          <div className="profile-completion">
+            <div>
+              <span>Profile Completion</span>
+              <strong>{profileCompletion}%</strong>
+            </div>
+
+            <div className="completion-track">
+              <div style={{ width: `${profileCompletion}%` }}></div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="settings-grid">
-        <div className="settings-card">
-          <div className="settings-card-header">
-            <div className="settings-icon">👤</div>
+      <section className="settings-insight-grid">
+        <div className="settings-insight-card blue">
+          <span>Career Score</span>
+          <h2>{profileCompletion}%</h2>
+          <p>Profile completion status</p>
+        </div>
+
+        <div className="settings-insight-card purple">
+          <span>Account Type</span>
+          <h2>Pro</h2>
+          <p>Premium workspace</p>
+        </div>
+
+        <div className="settings-insight-card green">
+          <span>Security</span>
+          <h2>100%</h2>
+          <p>Account protected</p>
+        </div>
+
+        <div className="settings-insight-card orange">
+          <span>Status</span>
+          <h2>Active</h2>
+          <p>Workspace operational</p>
+        </div>
+      </section>
+
+      <section className="premium-settings-grid">
+        <div className="premium-settings-card large">
+          <div className="premium-settings-header">
+            <div className="settings-icon premium-icon">👤</div>
 
             <div>
-              <h2>Personal Details</h2>
-              <p>Manage your basic profile information.</p>
+              <h2>Profile Information</h2>
+              <p>Update your personal and career identity.</p>
             </div>
           </div>
 
-          <div className="settings-form">
+          <div className="premium-settings-form two-column">
             <div className="settings-form-group">
               <label>Full Name</label>
 
@@ -207,29 +324,8 @@ function Settings() {
               />
             </div>
 
-            <button
-              className="settings-save-btn"
-              onClick={updateProfile}
-              disabled={loading}
-            >
-              {loading ? "Saving..." : "Save Changes"}
-            </button>
-          </div>
-        </div>
-
-        <div className="settings-card">
-          <div className="settings-card-header">
-            <div className="settings-icon">📧</div>
-
-            <div>
-              <h2>Email Address</h2>
-              <p>Update your account email address.</p>
-            </div>
-          </div>
-
-          <div className="settings-form">
             <div className="settings-form-group">
-              <label>Email</label>
+              <label>Email Address</label>
 
               <input
                 type="email"
@@ -240,60 +336,100 @@ function Settings() {
               />
             </div>
 
-            <button
-              className="settings-save-btn"
-              onClick={updateProfile}
-              disabled={loading}
-            >
-              {loading ? "Updating..." : "Update Email"}
-            </button>
-          </div>
-        </div>
-
-        <div className="settings-card">
-          <div className="settings-card-header">
-            <div className="settings-icon">📱</div>
-
-            <div>
-              <h2>Mobile Number</h2>
-              <p>Add your contact number for placement communication.</p>
-            </div>
-          </div>
-
-          <div className="settings-form">
             <div className="settings-form-group">
               <label>Mobile Number</label>
 
               <input
                 type="tel"
                 name="mobile"
-                placeholder="+91 98765 43210"
+                placeholder="+919876543210"
                 value={profile.mobile}
                 onChange={handleChange}
               />
             </div>
+          </div>
+
+          <button
+            className="settings-primary-btn"
+            onClick={updateProfile}
+            disabled={loading}
+          >
+            {loading ? "Saving Profile..." : "Save Profile Changes"}
+          </button>
+        </div>
+
+        <div className="premium-settings-card large">
+          <div className="premium-settings-header">
+            <div className="settings-icon premium-icon">🔔</div>
+
+            <div>
+              <h2>Notification Center</h2>
+              <p>Enable or disable career workflow alerts.</p>
+            </div>
+          </div>
+
+          <div className="notification-list">
+            <button
+              className={
+                preferences.emailNotifications
+                  ? "notification-toggle active"
+                  : "notification-toggle"
+              }
+              onClick={() => togglePreference("emailNotifications")}
+            >
+              <span>📧 Email Notifications</span>
+              <strong>{preferences.emailNotifications ? "ON" : "OFF"}</strong>
+            </button>
 
             <button
-              className="settings-save-btn"
-              onClick={updateProfile}
-              disabled={loading}
+              className={
+                preferences.interviewReminders
+                  ? "notification-toggle active"
+                  : "notification-toggle"
+              }
+              onClick={() => togglePreference("interviewReminders")}
             >
-              {loading ? "Saving..." : "Save Number"}
+              <span>🎯 Interview Reminders</span>
+              <strong>{preferences.interviewReminders ? "ON" : "OFF"}</strong>
+            </button>
+
+            <button
+              className={
+                preferences.resumeTips
+                  ? "notification-toggle active"
+                  : "notification-toggle"
+              }
+              onClick={() => togglePreference("resumeTips")}
+            >
+              <span>📄 Resume Tips</span>
+              <strong>{preferences.resumeTips ? "ON" : "OFF"}</strong>
+            </button>
+
+            <button
+              className={
+                preferences.jobAlerts
+                  ? "notification-toggle active"
+                  : "notification-toggle"
+              }
+              onClick={() => togglePreference("jobAlerts")}
+            >
+              <span>💼 Job Application Alerts</span>
+              <strong>{preferences.jobAlerts ? "ON" : "OFF"}</strong>
             </button>
           </div>
         </div>
 
-        <div className="settings-card">
-          <div className="settings-card-header">
-            <div className="settings-icon">🔐</div>
+        <div className="premium-settings-card">
+          <div className="premium-settings-header">
+            <div className="settings-icon premium-icon">🔐</div>
 
             <div>
-              <h2>Change Password</h2>
-              <p>Update your account password securely.</p>
+              <h2>Security</h2>
+              <p>Update your password securely.</p>
             </div>
           </div>
 
-          <div className="settings-form">
+          <div className="premium-settings-form">
             <div className="settings-form-group">
               <label>Current Password</label>
 
@@ -329,32 +465,31 @@ function Settings() {
                 onChange={handlePasswordChange}
               />
             </div>
-
-            <button
-              className="settings-save-btn"
-              onClick={changePassword}
-              disabled={passwordLoading}
-            >
-              {passwordLoading ? "Updating..." : "Update Password"}
-            </button>
           </div>
+
+          <button
+            className="settings-primary-btn"
+            onClick={changePassword}
+            disabled={passwordLoading}
+          >
+            {passwordLoading ? "Updating Password..." : "Update Password"}
+          </button>
         </div>
 
-        <div className="settings-card danger-settings-card">
-          <div className="settings-card-header">
+        <div className="premium-settings-card danger-premium-card">
+          <div className="premium-settings-header">
             <div className="settings-icon danger-icon">⚠️</div>
 
             <div>
-              <h2>Delete Account</h2>
-              <p>Permanently delete your account and all stored data.</p>
+              <h2>Data & Account</h2>
+              <p>Export your data or permanently delete your account.</p>
             </div>
           </div>
 
-          <div className="danger-zone-box">
-            <p>
-              This action will permanently delete your jobs, resumes, and
-              account details. This cannot be undone.
-            </p>
+          <div className="data-action-box">
+            <button className="export-data-btn" onClick={exportAccountData}>
+              Export My Data
+            </button>
 
             <button
               className="delete-account-btn"
@@ -363,6 +498,11 @@ function Settings() {
               Delete Account
             </button>
           </div>
+
+          <p className="danger-note">
+            Deleting your account will permanently remove your jobs, resumes,
+            profile, and saved data. This action cannot be undone.
+          </p>
         </div>
       </section>
 

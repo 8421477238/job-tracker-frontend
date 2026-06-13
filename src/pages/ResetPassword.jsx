@@ -1,15 +1,16 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import API from "../api/axios";
 import AuthVisual from "../components/AuthVisual";
 
-function Login() {
+function ResetPassword() {
+  const { token } = useParams();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    newPassword: "",
+    confirmPassword: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -24,28 +25,29 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.email || !formData.password) {
-      toast.error("Please enter email and password");
+    if (!formData.newPassword || !formData.confirmPassword) {
+      toast.error("Please fill all fields");
+      return;
+    }
+
+    if (formData.newPassword !== formData.confirmPassword) {
+      toast.error("Passwords do not match");
       return;
     }
 
     try {
       setLoading(true);
 
-      const res = await API.post("/auth/login", formData);
+      const res = await API.put(`/auth/reset-password/${token}`, formData);
 
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-
-      toast.success("Login successful");
+      toast.success(res.data.message || "Password reset successfully");
 
       setTimeout(() => {
-        navigate("/dashboard");
-      }, 600);
+        navigate("/");
+      }, 900);
     } catch (error) {
       toast.error(
-        error.response?.data?.message ||
-          "Login failed. Please check email and password."
+        error.response?.data?.message || "Failed to reset password"
       );
     } finally {
       setLoading(false);
@@ -63,46 +65,42 @@ function Login() {
             <h2>Job Tracker</h2>
           </div>
 
-          <p className="eyebrow">Welcome back</p>
+          <p className="eyebrow">Create New Password</p>
 
-          <h2>Login to your account</h2>
+          <h2>Reset Password</h2>
 
           <p className="auth-subtitle">
-            Enter your email and password to continue your placement journey.
+            Enter your new password and confirm it to recover your account.
           </p>
 
           <form onSubmit={handleSubmit}>
-            <label>Email Address</label>
-
-            <input
-              type="email"
-              name="email"
-              placeholder="darshan@example.com"
-              value={formData.email}
-              onChange={handleChange}
-            />
-
-            <label>Password</label>
+            <label>New Password</label>
 
             <input
               type="password"
-              name="password"
-              placeholder="Enter password"
-              value={formData.password}
+              name="newPassword"
+              placeholder="Enter new password"
+              value={formData.newPassword}
               onChange={handleChange}
             />
 
-            <div className="forgot-password-row">
-              <Link to="/forgot-password">Forgot Password?</Link>
-            </div>
+            <label>Confirm Password</label>
+
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm new password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+            />
 
             <button className="auth-btn" type="submit" disabled={loading}>
-              {loading ? "Logging in..." : "Login"}
+              {loading ? "Updating Password..." : "Reset Password"}
             </button>
           </form>
 
           <p className="auth-link">
-            Don&apos;t have an account? <Link to="/register">Create account</Link>
+            Back to <Link to="/">Login</Link>
           </p>
         </div>
       </div>
@@ -110,4 +108,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default ResetPassword;
