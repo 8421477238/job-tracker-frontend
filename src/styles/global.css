@@ -756,7 +756,7 @@ textarea:focus {
     min-height: 100vh;
   }
 
-  .dashboard-layout {
+  /*.dashboard-layout {
     flex-direction: column;
   }
 
@@ -764,7 +764,7 @@ textarea:focus {
     width: 100%;
     min-height: auto;
     position: relative;
-  }
+  }*/
 
   .sidebar-brand {
     margin-bottom: 24px;
