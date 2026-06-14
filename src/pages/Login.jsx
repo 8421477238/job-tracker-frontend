@@ -7,12 +7,19 @@ import AuthVisual from "../components/AuthVisual";
 function Login() {
   const navigate = useNavigate();
 
+  const GOOGLE_LOGIN_URL =
+    "https://job-tracker-backend-production-90a8.up.railway.app/api/auth/google";
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
   const [loading, setLoading] = useState(false);
+
+  const handleGoogleLogin = () => {
+    window.location.href = GOOGLE_LOGIN_URL;
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -54,67 +61,41 @@ function Login() {
 
   return (
     <div className="auth-page modern-auth-page">
-
       <div className="mobile-auth-landing">
-  <div className="mobile-auth-topbar">
-    <div className="mobile-auth-logo">
-      <span>JT</span>
+        <div className="mobile-auth-topbar">
+          <div className="mobile-auth-logo">
+            <span>JT</span>
 
-      <div>
-        <h3>Job Tracker</h3>
-        <p>Placement Career OS</p>
+            <div>
+              <h3>Job Tracker</h3>
+              <p>Placement Career OS</p>
+            </div>
+          </div>
+
+          <div className="mobile-auth-pill">AI Powered</div>
+        </div>
+
+        <h1>
+          Manage your job search
+          <span>like a pro.</span>
+        </h1>
+
+        <p className="mobile-auth-desc">
+          Track applications, store resumes, prepare for interviews, and manage
+          your complete placement journey in one modern app.
+        </p>
+
+        <div className="mobile-auth-actions">
+          <a href="#login-form" className="primary">
+            Login
+          </a>
+
+          <Link to="/register" className="secondary">
+            Register
+          </Link>
+        </div>
       </div>
-    </div>
 
-    <div className="mobile-auth-pill">AI Powered</div>
-  </div>
-
-  <h1>
-    Manage your job search
-    <span>like a pro.</span>
-  </h1>
-
-  <p className="mobile-auth-desc">
-    Track applications, store resumes, prepare for interviews, and manage your
-    complete placement journey in one modern app.
-  </p>
-
-  <div className="mobile-auth-actions">
-    <a href="#login-form" className="primary">
-      Login
-    </a>
-
-    <Link to="/register" className="secondary">
-      Register
-    </Link>
-  </div>
-
-  <div className="mobile-auth-features">
-    <div className="mobile-auth-feature">
-      <span>📊</span>
-      <strong>Job Tracking</strong>
-      <p>Manage applications</p>
-    </div>
-
-    <div className="mobile-auth-feature">
-      <span>📄</span>
-      <strong>Resume Vault</strong>
-      <p>Store resumes</p>
-    </div>
-
-    <div className="mobile-auth-feature">
-      <span>🎯</span>
-      <strong>Interview Prep</strong>
-      <p>Practice questions</p>
-    </div>
-
-    <div className="mobile-auth-feature">
-      <span>🤖</span>
-      <strong>AI Assistant</strong>
-      <p>Career guidance</p>
-    </div>
-  </div>
-</div>
       <AuthVisual />
 
       <div className="auth-right modern-auth-right">
@@ -131,6 +112,19 @@ function Login() {
           <p className="auth-subtitle">
             Enter your email and password to continue your placement journey.
           </p>
+
+          <button
+            type="button"
+            className="google-login-btn"
+            onClick={handleGoogleLogin}
+          >
+            <span>G</span>
+            Continue with Google
+          </button>
+
+          <div className="auth-divider">
+            <span>OR</span>
+          </div>
 
           <form onSubmit={handleSubmit}>
             <label>Email Address</label>

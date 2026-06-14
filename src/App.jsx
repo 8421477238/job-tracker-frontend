@@ -4,6 +4,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import GoogleSuccess from "./pages/GoogleSuccess";
+
 import Dashboard from "./pages/Dashboard";
 import AddJob from "./pages/AddJob";
 import ResumeVault from "./pages/ResumeVault";
@@ -25,6 +27,8 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
         <Route path="/reset-password/:token" element={<ResetPassword />} />
+
+        <Route path="/google-success" element={<GoogleSuccess />} />
 
         <Route
           path="/dashboard"
