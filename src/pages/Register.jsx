@@ -34,9 +34,7 @@ function Register() {
 
       const res = await API.post("/auth/register", formData);
 
-      toast.success(
-        res.data.message || "Account created successfully"
-      );
+      toast.success(res.data.message || "Account created successfully");
 
       setTimeout(() => {
         navigate("/");
@@ -53,11 +51,70 @@ function Register() {
 
   return (
     <div className="auth-page modern-auth-page">
+      <div className="mobile-auth-landing">
+        <div className="mobile-auth-topbar">
+          <div className="mobile-auth-logo">
+            <span>JT</span>
+
+            <div>
+              <h3>Job Tracker</h3>
+              <p>Placement Career OS</p>
+            </div>
+          </div>
+
+          <div className="mobile-auth-pill">AI Powered</div>
+        </div>
+
+        <h1>
+          Start your placement journey
+          <span>with clarity.</span>
+        </h1>
+
+        <p className="mobile-auth-desc">
+          Create your account to track applications, store resumes, prepare for
+          interviews, and manage your career workflow in one modern dashboard.
+        </p>
+
+        <div className="mobile-auth-actions">
+          <Link to="/" className="secondary">
+            Login
+          </Link>
+
+          <a href="#register-form" className="primary">
+            Create Account
+          </a>
+        </div>
+
+        <div className="mobile-auth-features">
+          <div className="mobile-auth-feature">
+            <span>📊</span>
+            <strong>Job Tracking</strong>
+            <p>Manage applications</p>
+          </div>
+
+          <div className="mobile-auth-feature">
+            <span>📄</span>
+            <strong>Resume Vault</strong>
+            <p>Store resumes</p>
+          </div>
+
+          <div className="mobile-auth-feature">
+            <span>🎯</span>
+            <strong>Interview Prep</strong>
+            <p>Practice questions</p>
+          </div>
+
+          <div className="mobile-auth-feature">
+            <span>🤖</span>
+            <strong>AI Assistant</strong>
+            <p>Career guidance</p>
+          </div>
+        </div>
+      </div>
+
       <div className="auth-bg-orb orb-1"></div>
       <div className="auth-bg-orb orb-2"></div>
       <div className="auth-bg-orb orb-3"></div>
-
-      {/* LEFT SIDE */}
 
       <div className="auth-left modern-auth-left">
         <div className="brand-box premium-brand">
@@ -80,9 +137,8 @@ function Register() {
           </h1>
 
           <p>
-            Track applications, manage interviews, organize resumes,
-            prepare for placements, and grow faster with AI-powered
-            career tools.
+            Track applications, manage interviews, organize resumes, prepare for
+            placements, and grow faster with AI-powered career tools.
           </p>
 
           <div className="modern-feature-grid">
@@ -109,20 +165,15 @@ function Register() {
         </div>
       </div>
 
-      {/* RIGHT SIDE */}
-
       <div className="auth-right">
-        <div className="modern-auth-card">
+        <div className="modern-auth-card" id="register-form">
           <div className="card-header">
-            <span className="eyebrow">
-              Create Account
-            </span>
+            <span className="eyebrow">Create Account</span>
 
             <h2>Join Job Tracker AI</h2>
 
             <p>
-              Create your account and start tracking your career
-              growth today.
+              Create your account and start tracking your career growth today.
             </p>
           </div>
 
@@ -163,14 +214,8 @@ function Register() {
               />
             </div>
 
-            <button
-              className="modern-auth-btn"
-              type="submit"
-              disabled={loading}
-            >
-              {loading
-                ? "Creating Account..."
-                : "Create Account"}
+            <button className="modern-auth-btn" type="submit" disabled={loading}>
+              {loading ? "Creating Account..." : "Create Account"}
             </button>
           </form>
 

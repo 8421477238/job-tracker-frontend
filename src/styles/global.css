@@ -7096,3 +7096,209 @@ body.dark-mode .reset-success-box {
 body.dark-mode .reset-success-box p {
   color: #cbd5e1;
 }
+
+/* ==========================
+   PREMIUM MOBILE AUTH LANDING FIX
+========================== */
+
+.mobile-auth-landing {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .modern-auth-page {
+    display: block !important;
+    min-height: 100vh !important;
+    background:
+      radial-gradient(circle at top left, rgba(37, 99, 235, 0.22), transparent 36%),
+      radial-gradient(circle at bottom right, rgba(124, 58, 237, 0.18), transparent 32%),
+      linear-gradient(180deg, #f8fafc, #eef4ff) !important;
+    padding: 16px !important;
+  }
+
+  .auth-visual,
+  .modern-auth-left,
+  .auth-left {
+    display: none !important;
+  }
+
+  .auth-right,
+  .modern-auth-right {
+    width: 100% !important;
+    min-height: auto !important;
+    padding: 0 !important;
+    display: block !important;
+  }
+
+  .mobile-auth-landing {
+    display: block;
+    padding: 22px;
+    margin-bottom: 16px;
+    border-radius: 28px;
+    color: white;
+    background:
+      radial-gradient(circle at top right, rgba(96, 165, 250, 0.4), transparent 35%),
+      linear-gradient(135deg, #020617, #0f172a);
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.28);
+  }
+
+  .mobile-auth-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 26px;
+  }
+
+  .mobile-auth-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .mobile-auth-logo span {
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: white;
+    font-weight: 900;
+    box-shadow: 0 14px 34px rgba(37, 99, 235, 0.35);
+  }
+
+  .mobile-auth-logo h3 {
+    margin: 0;
+    font-size: 18px;
+    color: white;
+  }
+
+  .mobile-auth-logo p {
+    margin: 2px 0 0;
+    font-size: 12px;
+    color: #94a3b8;
+  }
+
+  .mobile-auth-pill {
+    padding: 9px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #bfdbfe;
+    font-size: 12px;
+    font-weight: 900;
+  }
+
+  .mobile-auth-landing h1 {
+    margin: 0;
+    font-size: 34px;
+    line-height: 1.04;
+    letter-spacing: -0.06em;
+    color: white;
+  }
+
+  .mobile-auth-landing h1 span {
+    display: block;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa, #34d399);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .mobile-auth-landing .mobile-auth-desc {
+    margin: 14px 0 20px;
+    color: #cbd5e1;
+    line-height: 1.65;
+    font-size: 14px;
+  }
+
+  .mobile-auth-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .mobile-auth-actions a {
+    min-height: 48px;
+    display: grid;
+    place-items: center;
+    border-radius: 16px;
+    text-decoration: none;
+    font-weight: 900;
+    font-size: 14px;
+  }
+
+  .mobile-auth-actions .primary {
+    background: white;
+    color: #1d4ed8;
+  }
+
+  .mobile-auth-actions .secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+  }
+
+  .mobile-auth-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .mobile-auth-feature {
+    padding: 12px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .mobile-auth-feature span {
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .mobile-auth-feature strong {
+    display: block;
+    color: white;
+    font-size: 13px;
+  }
+
+  .mobile-auth-feature p {
+    margin: 3px 0 0;
+    color: #94a3b8;
+    font-size: 11px;
+  }
+
+  .modern-auth-card,
+  .auth-card {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 24px !important;
+    border-radius: 28px !important;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.16) !important;
+  }
+
+  .modern-auth-card h2,
+  .auth-card h2 {
+    font-size: 28px !important;
+    line-height: 1.1 !important;
+  }
+
+  .auth-subtitle,
+  .card-header p {
+    font-size: 14px !important;
+    line-height: 1.55 !important;
+  }
+
+  .modern-auth-card input,
+  .auth-card input {
+    height: 54px !important;
+    border-radius: 16px !important;
+    font-size: 15px !important;
+  }
+
+  .auth-btn,
+  .modern-auth-btn {
+    height: 54px !important;
+    border-radius: 16px !important;
+  }
+}
